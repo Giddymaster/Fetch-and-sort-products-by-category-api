@@ -65,6 +65,7 @@ function App() {
 
       <div className="products">
       <h3 className="products-title">Products:</h3>
+      <p className="use-case"> {products.length === 0 && <p>Example:<b> Men Shoes -</b>  Puma Future Rider Trainers </p>} </p>
       <ol className="products-list">
         {filteredProducts.map((product) => (
           <li key={product.id}>{product.title}</li>
