@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { FaSortAlphaDown } from "react-icons/fa";
+import { useState, useEffect } from "react"; // Import useEffect
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -7,38 +6,46 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
 
+  // Fetch products automatically when the component mounts
   useEffect(() => {
     async function fetchProducts() {
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch("https://dummyjson.com/products?limit=200");
+        const response = await fetch("https://dummyjson.com/products?limit=100");
 
         if (!response.ok) throw new Error("Failed to fetch products");
 
         const data = await response.json();
         setProducts(data.products);
 
-        const specificCategories = ["All Categories",...new Set(data.products.map((product) => product.category))];
+        // Extract categories from the data
+        const specificCategories = [
+          "All Categories",
+          ...new Set(data.products.map((product) => product.category)),
+        ];
         setCategories(specificCategories);
-
       } catch (error) {
-        setError("Error! Check your code!", error);
+        setError("Error! Check your code!");
       } finally {
         setLoading(false);
       }
     }
 
-    fetchProducts();
-  }, []);  
+    fetchProducts(); // Call the fetch function
+  }, []); // Empty dependency array ensures this runs only once on mount
 
+  // Filter products by category and search query
   const filteredProducts =
-    selectedCategory === "all" ? products.filter((product) =>
+    selectedCategory === "all"
+      ? products.filter((product) =>
           product.title.toLowerCase().includes(searchQuery.toLowerCase())
         )
-      : products.filter((product) => product.category === selectedCategory &&
+      : products.filter(
+          (product) =>
+            product.category === selectedCategory &&
             product.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
@@ -46,20 +53,22 @@ function App() {
     <div className="main-container">
       <div className="hero-section">
         <div className="background-text">
-          Designed by <a href="https://github.com/Giddymaster/Fetch-and-sort-products-by-category-api">Gideon Mwangi</a>
+          Designed by <a href="www.linkedin.com/in/gideon-mwangi">Gideon Mwangi</a>
         </div>
-
         <h1>E-Commerce Shop</h1>
 
+        {/* Remove the button */}
         {/* <button onClick={fetchProducts} disabled={loading}>
           {loading ? "Loading..." : "List all Products"}
         </button> */}
 
         {categories.length > 0 && (
           <div className="category">
-            <label className="category-label">Sort <FaSortAlphaDown /> </label>
-            <select className="select-category" value={selectedCategory} 
-            onChange={(e) => setSelectedCategory(e.target.value)}
+            <label className="category-label">Sort by Category: </label>
+            <select
+              className="select-category"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
             >
               {categories.map((category, index) => (
                 <option key={index} value={category}>
@@ -70,6 +79,7 @@ function App() {
           </div>
         )}
 
+        {/* Search Bar */}
         <div className="search-bar">
           <input
             type="text"
@@ -121,8 +131,6 @@ function App() {
           </div>
         )}
       </div>
-
-      {error && <p className="error">{error}</p>}
     </div>
   );
 }
