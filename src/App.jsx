@@ -99,23 +99,6 @@ function App() {
                 <h3 className="product-title">{product.title}</h3>
                 <p className="product-description">{product.description}</p>
                 <p className="product-price">${product.price}</p>
-                <p className="product-rating">
-                  Rating: {product.rating} ⭐ ({product.reviews.length} reviews)
-                </p>
-                <p className="product-stock">
-                  {product.stock > 0 ? "In Stock" : "Out of Stock"}
-                </p>
-                <div className="product-reviews">
-                  <h4>Reviews:</h4>
-                  {product.reviews.map((review, index) => (
-                    <div key={index} className="review">
-                      <p>
-                        <strong>{review.reviewerName}</strong> ({review.rating} ⭐)
-                      </p>
-                      <p>{review.comment}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             ))}
           </div>
